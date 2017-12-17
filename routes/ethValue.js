@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 require('dotenv').config();
+var excercise = require('./helper/excercise');
 
 const Gdax = require('gdax');
 var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env.API_SECRET, process.env.PASSPHRASE, process.env.APIURI);
@@ -27,27 +28,16 @@ router.post('/buy', function(req, res, next){
     var size = req.body.size;
     var product_id = req.body.product_id;
 
-    var buyParams = {};
-
     if(price && size && product_id){
-        buyParams = {
-            'price': price, // USD
-            'size': size,  // BTC
-            'product_id': 'ETH-USD',
-        };
-    } else {
-        res.json(JSON.parse("error"));
-    }
-    if(req.body.treasure == 'aashay'){
-
-    }else {
-        authedSandboxClient.buy(buyParams, function (err, data) {
+        excercise.buyCall(price, size, 'ETH-USD', req.body.treasure, function (err, buyResponse) {
             if(err){
                 res.json(JSON.parse("error"));
             }else{
-                res.json(JSON.parse(data.body));
+                res.json(buyResponse);
             }
         });
+    } else {
+        res.json(JSON.parse("error"));
     }
 });
 
@@ -56,27 +46,16 @@ router.post('/sell', function(req, res, next){
     var size = req.body.size;
     var product_id = req.body.product_id;
 
-    var sellParams = {};
-
-    if(price && size && product_id){
-        sellParams = {
-            'price': price, // USD
-            'size': size,  // BTC
-            'product_id': 'ETH-USD',
-        };
-    } else {
-        res.json(JSON.parse("error"));
-    }
-    if(req.body.treasure == 'aashay'){
-
-    }else {
-        authedSandboxClient.sell(sellParams, function (err, data) {
+    if(price && size && product_id) {
+        excercise.sellCall(price, size, 'ETH-USD', req.body.treasure, function (err, sellResponse) {
             if(err){
                 res.json(JSON.parse("error"));
             }else{
-                res.json(JSON.parse(data.body));
+                res.json(sellResponse);
             }
-        });
+        })
+    } else {
+        res.json("error");
     }
 });
 

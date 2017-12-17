@@ -12,6 +12,7 @@ var ltc = require('./routes/ltcValue');
 var eth = require('./routes/ethValue');
 var btc = require('./routes/btcValue');
 var cron = require('./routes/cron');
+var smartBot = require('./routes/smartBot');
 var account = require('./routes/account');
 
 require('dotenv').config();
@@ -53,9 +54,11 @@ var auto = new SequelizeAuto('coinbot', 'root', '', {
 auto.run(function (err) {
 });
 
-new CronJob('*/10 * * * * *', function() {
-    cron.runCronJob();
-}, null, true, 'America/Los_Angeles');
+// new CronJob('*/10 * * * * *', function() {
+//     cron.runCronJob();
+// }, null, true, 'America/Los_Angeles');
+
+smartBot.smartBot();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -49,86 +49,116 @@ router.get('/history', function(req, res, next){
 });
 
 router.post('/orders', function (req, res, next) {
-    if(req.body.username == 'shah'){
-        authedClient.getOrders(function(err, data){
-            if(err){
-                res.json(JSON.parse("error"));
-            }else{
-                res.json(JSON.parse(data.body));
-            }
-        })
-    }else{
-        authedSandboxClient.getOrders(function(err, data){
-            if(err){
-                res.json(JSON.parse("error"));
-            }else{
-                res.json(JSON.parse(data.body));
-            }
-        })
-    }
+    authedClient.getOrders(function(err, data){
+        if(err){
+            res.json(JSON.parse("error"));
+        }else{
+            res.json(JSON.parse(data.body));
+        }
+    })
+    // if(req.body.username == 'shah'){
+    //     authedClient.getOrders(function(err, data){
+    //         if(err){
+    //             res.json(JSON.parse("error"));
+    //         }else{
+    //             res.json(JSON.parse(data.body));
+    //         }
+    //     })
+    // }else{
+    //     authedSandboxClient.getOrders(function(err, data){
+    //         if(err){
+    //             res.json(JSON.parse("error"));
+    //         }else{
+    //             res.json(JSON.parse(data.body));
+    //         }
+    //     })
+    // }
 });
 
 router.post('/order', function (req, res, next) {
     if(req.body.order_id) {
-        if (req.body.username == 'shah') {
-            authedClient.getOrder(req.body.order_id, function (err, data) {
-                if (err) {
-                    res.json(JSON.parse("error"));
-                } else {
-                    res.json(JSON.parse(data.body));
-                }
-            })
-        } else {
-            authedSandboxClient.getOrder(req.body.order_id, function (err, data) {
-                if (err) {
-                    res.json(JSON.parse("error"));
-                } else {
-                    res.json(JSON.parse(data.body));
-                }
-            })
-        }
+        authedClient.getOrder(req.body.order_id, function (err, data) {
+            if (err) {
+                res.json(JSON.parse("error"));
+            } else {
+                res.json(JSON.parse(data.body));
+            }
+        })
+        // if (req.body.username == 'shah') {
+        //     authedClient.getOrder(req.body.order_id, function (err, data) {
+        //         if (err) {
+        //             res.json(JSON.parse("error"));
+        //         } else {
+        //             res.json(JSON.parse(data.body));
+        //         }
+        //     })
+        // } else {
+        //     console.log("Single order");
+        //     authedSandboxClient.getOrder(req.body.order_id, function (err, data) {
+        //         console.log("Single order");
+        //         if (err) {
+        //             res.json(JSON.parse("error"));
+        //         } else {
+        //             res.json(JSON.parse(data.body));
+        //         }
+        //     })
+        // }
     }
 });
 
 router.post('/cancelorders', function (req, res, next) {
-    if(req.body.username == 'shah'){
-        authedClient.cancelAllOrders(function(err, data){
-            if(err){
-                res.json(JSON.parse("error"));
-            }else{
-                res.json(JSON.parse(data.body));
-            }
-        })
-    }else{
-        authedSandboxClient.cancelAllOrders(function(err, data){
-            if(err){
-                res.json(JSON.parse("error"));
-            }else{
-                res.json(JSON.parse(data.body));
-            }
-        })
-    }
+    authedClient.cancelAllOrders(function(err, data){
+        if(err){
+            res.json(JSON.parse("error"));
+        }else{
+            res.json(JSON.parse(data.body));
+        }
+    })
+    // if(req.body.username == 'shah'){
+    //     authedClient.cancelAllOrders(function(err, data){
+    //         if(err){
+    //             res.json(JSON.parse("error"));
+    //         }else{
+    //             res.json(JSON.parse(data.body));
+    //         }
+    //     })
+    // }else{
+    //     authedSandboxClient.cancelAllOrders(function(err, data){
+    //         if(err){
+    //             res.json(JSON.parse("error"));
+    //         }else{
+    //             res.json(JSON.parse(data.body));
+    //         }
+    //     })
+    // }
 });
 
 router.post('/cancelorder', function (req, res, next) {
     if(req.body.order_id) {
-        if (req.body.username == 'shah') {
-            authedClient.cancelOrder(req.body.order_id, function (err, data) {
-                if (err) {
-                    res.json(JSON.parse("error"));
-                } else {
-                    res.json(JSON.parse(data.body));
-                }
-            })
-        } else {
-            authedSandboxClient.cancelOrder(req.body.order_id, function (err, data) {
-                if (err) {
-                    res.json(JSON.parse("error"));
-                } else {
-                    res.json(JSON.parse(data.body));
-                }
-            })
-        }
+        authedClient.cancelOrder(req.body.order_id, function (err, data) {
+            if (err) {
+                res.json(JSON.parse("error"));
+            } else {
+                res.json(JSON.parse(data.body));
+            }
+        })
+        // if (req.body.username == 'shah') {
+        //     authedClient.cancelOrder(req.body.order_id, function (err, data) {
+        //         if (err) {
+        //             res.json(JSON.parse("error"));
+        //         } else {
+        //             res.json(JSON.parse(data.body));
+        //         }
+        //     })
+        // } else {
+        //     authedSandboxClient.cancelOrder(req.body.order_id, function (err, data) {
+        //         if (err) {
+        //             res.json(JSON.parse("error"));
+        //         } else {
+        //             res.json(JSON.parse(data.body));
+        //         }
+        //     })
+        // }
     }
 });
 

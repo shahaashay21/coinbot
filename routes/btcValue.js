@@ -7,6 +7,7 @@ var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env
 var authedSandboxClient = new Gdax.AuthenticatedClient(process.env.SANDBOX_API_KEY, process.env.SANDBOX_API_SECRET, process.env.SANDBOX_PASSPHRASE, process.env.SANDBOXURI);
 
 const BTC = require('./helper/btc');
+var excercise = require('./helper/excercise');
 
 router.get('/usd', function(req, res, next) {
     BTC.getBtcUsdValue(function (err, response) {
@@ -21,29 +22,20 @@ router.post('/buy', function(req, res, next){
     var size = req.body.size;
     var product_id = req.body.product_id;
 
-    var buyParams = {};
-
     if(price && size && product_id){
-        buyParams = {
-            'price': price, // USD
-            'size': size,  // BTC
-            'product_id': 'BTC-USD',
-        };
-    } else {
-        res.json(JSON.parse("error"));
-    }
-    if(req.body.treasure == 'aashay'){
-
-    }else {
-        authedSandboxClient.buy(buyParams, function (err, data) {
+        excercise.buyCall(price, size, 'BTC-USD', req.body.treasure, function (err, buyResponse) {
             if(err){
                 res.json(JSON.parse("error"));
             }else{
-                res.json(JSON.parse(data.body));
+                res.json(buyResponse);
             }
         });
+    } else {
+        res.json(JSON.parse("error"));
     }
 });
+
+
 
 router.post('/sell', function(req, res, next){
     var price = req.body.price;
@@ -51,26 +43,14 @@ router.post('/sell', function(req, res, next){
     var product_id = req.body.product_id;
     console.log(req.body);
 
-    var sellParams = {};
-
     if(price && size && product_id) {
-        sellParams = {
-            'price': price, // USD
-            'size': size,  // BTC
-            'product_id': 'BTC-USD',
-        };
-
-        if (req.body.treasure == 'aashay') {
-
-        } else {
-            authedSandboxClient.sell(sellParams, function (err, data) {
-                if (err) {
-                    res.json(JSON.parse("error"));
-                } else {
-                    res.json(JSON.parse(data.body));
-                }
-            });
-        }
+        excercise.sellCall(price, size, 'BTC-USD', req.body.treasure, function (err, sellResponse) {
+            if(err){
+                res.json(JSON.parse("error"));
+            }else{
+                res.json(sellResponse);
+            }
+        })
     } else {
         res.json("error");
     }
