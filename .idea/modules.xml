@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Gdax-api.iml" filepath="$PROJECT_DIR$/.idea/Gdax-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/coinbot.iml" filepath="$PROJECT_DIR$/.idea/coinbot.iml" />
     </modules>
   </component>
 </project>
