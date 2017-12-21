@@ -1,6 +1,7 @@
 var Sequelize = require('sequelize');
 
-module.exports = new Sequelize('coinbot', 'root', '', {
+module.exports = new Sequelize('coinbot', 'root', 'aashay', {
+    logging: false,
     host: 'localhost',
     dialect: 'mysql',
     port:3306,

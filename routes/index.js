@@ -7,8 +7,11 @@ const publicClient = new Gdax.PublicClient("LTC-USD", process.env.APIURI);
 
 const authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env.API_SECRET, process.env.PASSPHRASE, process.env.APIURI);
 
+var logger = require('./helper/winston');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    logger.info("aashay");
     // publicClient.getProducts((error, response, data) => {
     //     if (error) {
     //         // handle the error

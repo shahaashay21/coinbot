@@ -12,8 +12,12 @@ var ltc = require('./routes/ltcValue');
 var eth = require('./routes/ethValue');
 var btc = require('./routes/btcValue');
 var cron = require('./routes/cron');
-var smartBot = require('./routes/smartBot');
+var smartBotLTC = require('./routes/smartBotLTC');
+var smartBotBTC = require('./routes/smartBotBTC');
+var smartBotETH = require('./routes/smartBotETH');
 var account = require('./routes/account');
+var timeSeries = require('./routes/analysis/timeSeries');
+var gauss = require('./routes/analysis/gauss');
 
 require('dotenv').config();
 
@@ -41,7 +45,7 @@ app.use('/ltc', ltc);
 app.use('/btc', btc);
 app.use('/eth', eth);
 
-var auto = new SequelizeAuto('coinbot', 'root', '', {
+var auto = new SequelizeAuto('coinbot', 'root', 'aashay', {
     host: 'localhost',
     dialect: 'mysql',
     directory: path.join(__dirname, 'models'), // prevents the program from writing to disk
@@ -54,11 +58,39 @@ var auto = new SequelizeAuto('coinbot', 'root', '', {
 auto.run(function (err) {
 });
 
-// new CronJob('*/10 * * * * *', function() {
-//     cron.runCronJob();
-// }, null, true, 'America/Los_Angeles');
 
-smartBot.smartBot();
+//Cron jobs
+
+// Get all coins price
+new CronJob('00 */1 * * * *', function() {
+    cron.runCronJob();
+}, null, true, 'America/Los_Angeles');
+
+
+//Predict coin price
+new CronJob('00 */10 * * * *', function() {
+    gauss.ltcPrediction();
+}, null, true, 'America/Los_Angeles');
+
+
+//Verify coin price
+new CronJob('*/5 * * * * *', function() {
+    gauss.checkPrediction();
+}, null, true, 'America/Los_Angeles');
+
+
+
+// timeSeries.ethDataTimeSeries();
+
+//LTC BOT
+smartBotLTC.smartBot();
+//ETH BOT
+// smartBotETH.smartBot();
+//BTC BOT
+// smartBotBTC.smartBot();
+
+
+// timeSeries.getEthData();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

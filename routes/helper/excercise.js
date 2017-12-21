@@ -3,11 +3,11 @@ require('dotenv').config();
 const Gdax = require('gdax');
 var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env.API_SECRET, process.env.PASSPHRASE, process.env.APIURI);
 var authedSandboxClient = new Gdax.AuthenticatedClient(process.env.SANDBOX_API_KEY, process.env.SANDBOX_API_SECRET, process.env.SANDBOX_PASSPHRASE, process.env.SANDBOXURI);
-
+var logger = require('../helper/winston');
 
 exports.buyCall = function (price, size, product_id, treasure, callback){
-    console.log(price);
-    console.log(size);
+    logger.info(price);
+    logger.info(size);
     var buyParams = {};
 
     if(price && size && size > 0 && product_id){
@@ -21,13 +21,14 @@ exports.buyCall = function (price, size, product_id, treasure, callback){
         if(treasure == 'aashay'){
             authedClient.buy(buyParams, function (err, data) {
                 if(err){
-                    console.log("Error in buying stock: " + err);
+                    logger.info("Error in buying stock: " + err);
                     callback(err, null);
                 }else{
                     if(data && data.body) {
+                        logger.info("BUY MESSAGE: " + data.body.toString());
                         callback(null, JSON.parse(data.body));
                     }else {
-                        console.log("Error in buying: " + data);
+                        logger.info("Error in buying: " + data);
                         callback(data, null);
                     }
                 }
@@ -66,9 +67,16 @@ exports.sellCall = function (price, size, product_id, treasure, callback){
         if(treasure == 'aashay'){
             authedClient.sell(sellParams, function (err, data) {
                 if(err){
-                    callback("true", null);
+                    logger.info("Error in selling stock: " + err);
+                    callback(err, null);
                 }else{
-                    callback(null, JSON.parse(data.body));
+                    if(data && data.body) {
+                        logger.info("SELL MESSAGE: " + data.body.toString());
+                        callback(null, JSON.parse(data.body));
+                    }else {
+                        logger.info("Error in selling: " + data);
+                        callback(data, null);
+                    }
                 }
             });
 
