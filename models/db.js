@@ -8,6 +8,7 @@ module.exports.Eth = require('./eth')(sequelize, Sequelize);
 module.exports.Users = require('./users')(sequelize, Sequelize);
 module.exports.Order = require('./orders')(sequelize, Sequelize);
 module.exports.Prediction = require('./prediction')(sequelize, Sequelize);
+module.exports.Analysis = require('./analysis')(sequelize, Sequelize);
 
 
 module.exports.sequelize = sequelize;

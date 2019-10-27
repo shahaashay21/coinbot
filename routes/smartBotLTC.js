@@ -1,5 +1,5 @@
 const LTC = require('./helper/ltc');
-var excercise = require('./helper/excercise');
+var exercise = require('./helper/exercise');
 const Gdax = require('gdax');
 var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env.API_SECRET, process.env.PASSPHRASE, process.env.APIURI);
 var authedSandboxClient = new Gdax.AuthenticatedClient(process.env.SANDBOX_API_KEY, process.env.SANDBOX_API_SECRET, process.env.SANDBOX_PASSPHRASE, process.env.SANDBOXURI);
@@ -19,7 +19,6 @@ function smartLoop (i = 0) {
                 if (err) {
                     setTimeout(smartLoop, 10000);
                 } else {
-                    response = JSON.parse(response);
                     var price = parseFloat(response.bids[0][0]);
                     // Check max buying limit
                     logger.info("Current price: " + price);
@@ -30,7 +29,6 @@ function smartLoop (i = 0) {
                         clearInterval(checkBuyingPrice);
 
                         // var price = 101;
-                        var size = 1;
                         var product_id = "LTC-USD";
 
                         var investmentSize = (investPrice / (price)).toFixed(5);
@@ -38,7 +36,7 @@ function smartLoop (i = 0) {
 
                         var buyOrder = new DB.Order();
                         // 1. Buy
-                        excercise.buyCall(price, investmentSize, product_id, "aashay", function (err, buyResponse) {
+                        exercise.buyCall(price, investmentSize, product_id, "aashay", function (err, buyResponse) {
                             if (err) {
                                 logger.error("Buy error: " + err);
                             } else {
@@ -82,7 +80,7 @@ function smartLoop (i = 0) {
                                                     sellPrice = sellPrice.toFixed(2);
 
                                                     logger.info("Selling price: " + sellPrice);
-                                                    excercise.sellCall(sellPrice, investmentSize, product_id, "aashay", function (err, sellResponse) {
+                                                    exercise.sellCall(sellPrice, investmentSize, product_id, "aashay", function (err, sellResponse) {
                                                         logger.info("Placed sell limit: " + sellResponse.toString());
                                                         if (err) {
                                                             logger.error("Status error: " + err);

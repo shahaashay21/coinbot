@@ -9,7 +9,6 @@ exports.runCronJob = function() {
         if(err){
             logger.info("Error in getting LTC value: " + err);
         }else {
-            response = JSON.parse(response);
             var LtcObject = new DB.Ltc();
             if(response.bids && response.bids[0] && response.bids[0][0]) {
                 LtcObject.bid = response.bids[0][0];
@@ -23,9 +22,8 @@ exports.runCronJob = function() {
 
     ETH.getEthUsdValue(function (err, response) {
         if(err){
-            logger.info("Error in getting LTC value: " + err);
+            logger.info("Error in getting ETH value: " + err);
         }else {
-            response = JSON.parse(response);
             var EthObject = new DB.Eth();
             if(response.bids && response.bids[0] && response.bids[0][0]) {
                 EthObject.bid = response.bids[0][0];
@@ -39,9 +37,8 @@ exports.runCronJob = function() {
 
     BTC.getBtcUsdValue(function (err, response) {
         if(err){
-            logger.info("Error in getting LTC value: " + err);
+            logger.info("Error in getting BTC value: " + err);
         }else {
-            response = JSON.parse(response);
             var BtcObject = new DB.Btc();
             if(response.bids && response.bids[0] && response.bids[0][0]) {
                 BtcObject.bid = response.bids[0][0];

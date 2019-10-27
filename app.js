@@ -18,6 +18,12 @@ var smartBotETH = require('./routes/smartBotETH');
 var account = require('./routes/account');
 var timeSeries = require('./routes/analysis/timeSeries');
 var gauss = require('./routes/analysis/gauss');
+var regression = require('./routes/analysis/regression');
+var verifyAlgo = require('./routes/analysis/verifyAlgo');
+var verify_orders = require('./routes/helper/verify_orders');
+var analysis_result = require('./routes/helper/analysis_result');
+var predictionBotLtc = require("./routes/predictionBot/predictionBotLTC");
+// var socket = require("./routes/WebSocket/socket");
 
 require('dotenv').config();
 
@@ -45,7 +51,8 @@ app.use('/ltc', ltc);
 app.use('/btc', btc);
 app.use('/eth', eth);
 
-var auto = new SequelizeAuto('coinbot', 'root', 'aashay', {
+
+var auto = new SequelizeAuto(process.env.database_name, process.env.database_user, process.env.database_password, {
     host: 'localhost',
     dialect: 'mysql',
     directory: path.join(__dirname, 'models'), // prevents the program from writing to disk
@@ -55,9 +62,13 @@ var auto = new SequelizeAuto('coinbot', 'root', 'aashay', {
     }
 });
 
-auto.run(function (err) {
-});
+// Run every time when change in DB
+// auto.run(function (err) {
+// });
 
+
+//VERIFY ORDERS
+verify_orders.verifyOrders();
 
 //Cron jobs
 
@@ -67,23 +78,43 @@ new CronJob('00 */1 * * * *', function() {
 }, null, true, 'America/Los_Angeles');
 
 
-//Predict coin price
-new CronJob('00 */10 * * * *', function() {
+//Predict LTC coin price (GAUSS)
+new CronJob('07 */5 * * * *', function() {
     gauss.ltcPrediction();
+}, null, true, 'America/Los_Angeles');
+
+//Predict LTC coin price (REGRESSION)
+new CronJob('07 */5 * * * *', function() {
+    regression.ltcPrediction();
 }, null, true, 'America/Los_Angeles');
 
 
 //Verify coin price
-new CronJob('*/5 * * * * *', function() {
-    gauss.checkPrediction();
+new CronJob('*/8 * * * * *', function() {
+    verifyAlgo.checkPrediction();
 }, null, true, 'America/Los_Angeles');
 
+//Update Analysis Result (Every hour)
+new CronJob('00 */30 * * * *', function() {
+    analysis_result.updateResult();
+}, null, true, 'America/Los_Angeles');
 
+// MAKE SOME TRANSACTION OF LTC
+// predictionBotLtc.smartBotLTC();
+
+//SOCKET MESSAGE
+// socket.socketStart();
+
+
+//Temp price prediction
+// new CronJob('00 */1 * * * *', function() {
+//     gauss.ltcTempPrediction();
+// }, null, true, 'America/Los_Angeles');
 
 // timeSeries.ethDataTimeSeries();
 
 //LTC BOT
-smartBotLTC.smartBot();
+// smartBotLTC.smartBot();
 //ETH BOT
 // smartBotETH.smartBot();
 //BTC BOT
@@ -91,6 +122,9 @@ smartBotLTC.smartBot();
 
 
 // timeSeries.getEthData();
+// regression.ltcRegressionPrediction();
+// regression.ltcSS10Prediction();
+// regression.ltcPolynomialRegressionPrediction(1, 10);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

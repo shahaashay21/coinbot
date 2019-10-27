@@ -7,12 +7,16 @@ var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env
 var authedSandboxClient = new Gdax.AuthenticatedClient(process.env.SANDBOX_API_KEY, process.env.SANDBOX_API_SECRET, process.env.SANDBOX_PASSPHRASE, process.env.SANDBOXURI);
 
 const BTC = require('./helper/btc');
-var excercise = require('./helper/excercise');
+var excercise = require('./helper/exercise');
 
 router.get('/usd', function(req, res, next) {
     BTC.getBtcUsdValue(function (err, response) {
         // console.log((response));
-        res.json(JSON.parse(response));
+        if(err){
+            res.json("error");
+        }else{
+            res.json(response);
+        }
     });
 });
 

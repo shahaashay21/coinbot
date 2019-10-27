@@ -25,12 +25,16 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false
 		},
 		status: {
-			type: DataTypes.ENUM('pending','done','cancel'),
+			type: DataTypes.ENUM('pending','done','canceled','open','rejected'),
 			allowNull: false
 		},
 		type: {
 			type: DataTypes.ENUM('buy','sell'),
 			allowNull: false
+		},
+		predicted_value: {
+			type: DataTypes.FLOAT,
+			allowNull: true
 		},
 		createdAt: {
 			type: DataTypes.DATE,

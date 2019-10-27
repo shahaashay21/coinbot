@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 require('dotenv').config();
-var excercise = require('./helper/excercise');
+var excercise = require('./helper/exercise');
 
 const Gdax = require('gdax');
 var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env.API_SECRET, process.env.PASSPHRASE, process.env.APIURI);
@@ -13,7 +13,8 @@ const LTC = require('./helper/ltc');
 router.get('/usd', function(req, res, next) {
     LTC.getLtcUsdValue(function (err, response) {
         // console.log((response));
-        res.json(JSON.parse(response));
+        res.json(response);
+        // res.json(parseFloat(response.bids[0][0]));
     });
 });
 

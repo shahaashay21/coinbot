@@ -1,6 +1,7 @@
 var Sequelize = require('sequelize');
+require('dotenv').config();
 
-module.exports = new Sequelize('coinbot', 'root', 'aashay', {
+module.exports = new Sequelize(process.env.database_name, process.env.database_user, process.env.database_password, {
     logging: false,
     host: 'localhost',
     dialect: 'mysql',

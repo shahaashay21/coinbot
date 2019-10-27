@@ -1,5 +1,5 @@
 const BTC = require('./helper/btc');
-var excercise = require('./helper/excercise');
+var excercise = require('./helper/exercise');
 const Gdax = require('gdax');
 var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env.API_SECRET, process.env.PASSPHRASE, process.env.APIURI);
 var authedSandboxClient = new Gdax.AuthenticatedClient(process.env.SANDBOX_API_KEY, process.env.SANDBOX_API_SECRET, process.env.SANDBOX_PASSPHRASE, process.env.SANDBOXURI);

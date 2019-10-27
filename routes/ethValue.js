@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 require('dotenv').config();
-var excercise = require('./helper/excercise');
+var excercise = require('./helper/exercise');
 
 const Gdax = require('gdax');
 var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env.API_SECRET, process.env.PASSPHRASE, process.env.APIURI);
@@ -19,7 +19,11 @@ router.get('/usd', function(req, res, next) {
 router.get('/btc', function(req, res, next) {
     ETH.getEthBtcValue(function (err, response) {
         // console.log((response));
-        res.json(JSON.parse(response));
+        if(err){
+            res.json("error");
+        }else{
+            res.json(response);
+        }
     });
 });
 

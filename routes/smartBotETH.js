@@ -1,8 +1,7 @@
 const ETH = require('./helper/eth');
-var excercise = require('./helper/excercise');
+var excercise = require('./helper/exercise');
 const Gdax = require('gdax');
 var authedClient = new Gdax.AuthenticatedClient(process.env.API_KEY, process.env.API_SECRET, process.env.PASSPHRASE, process.env.APIURI);
-var authedSandboxClient = new Gdax.AuthenticatedClient(process.env.SANDBOX_API_KEY, process.env.SANDBOX_API_SECRET, process.env.SANDBOX_PASSPHRASE, process.env.SANDBOXURI);
 var logger = require('./helper/winston');
 const DB = require('../models/db');
 
@@ -13,13 +12,12 @@ const maxBuyingPriceLimit = 925.0;
 var i = 0;
 function smartLoop (i = 0) {
     if(i < 30) {
-        logger.info("HERE IS THE " + i+1 + " TIME");
+        // logger.info("HERE IS THE " + i+1 + " TIME");
         var checkBuyingPrice = setTimeout(function(){
             ETH.getEthUsdValue(function (err, response) {
                 if (err) {
                     setTimeout(smartLoop, 10000);
                 } else {
-                    response = JSON.parse(response);
                     var price = parseFloat(response.bids[0][0]);
                     // Check max buying limit
                     logger.info("Current price: " + price);

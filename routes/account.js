@@ -81,7 +81,11 @@ router.post('/orders', function (req, res, next) {
             res.json("error");
         }else{
             if(data.statusCode == 200){
-                res.json(JSON.parse(data.body));
+                if(data && data.body) {
+                    res.json(JSON.parse(data.body));
+                } else {
+                    res.json("error");
+                }
             } else {
                 logger.info("Error in getting order with statusCode: " + data.statusCode);
                 res.json("error");
